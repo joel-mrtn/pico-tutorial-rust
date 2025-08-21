@@ -1,0 +1,2 @@
+[language-server.rust-analyzer]
+config = { cargo = { target = "thumbv6m-none-eabi" }, check = { allTargets = false } }
