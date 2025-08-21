@@ -5,6 +5,8 @@ use panic_halt as _;
 
 use rp_pico as bsp;
 
+mod button;
+
 use bsp::entry;
 use bsp::hal::{
     Watchdog,
@@ -12,7 +14,8 @@ use bsp::hal::{
     pac,
     sio::Sio,
 };
-use embedded_hal::digital::{InputPin, StatefulOutputPin};
+use button::{ButtonExt, ButtonState};
+use embedded_hal::digital::StatefulOutputPin;
 
 #[entry]
 fn main() -> ! {
@@ -44,7 +47,7 @@ fn main() -> ! {
     let mut last_state = ButtonState::Released;
 
     loop {
-        let state: ButtonState = button.is_low().unwrap().into();
+        let state = button.state().unwrap();
 
         if last_state == ButtonState::Pressed && state == ButtonState::Released {
             delay.delay_ms(40); // debounce
@@ -52,21 +55,5 @@ fn main() -> ! {
         }
 
         last_state = state;
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum ButtonState {
-    Pressed,
-    Released,
-}
-
-impl From<bool> for ButtonState {
-    fn from(high: bool) -> Self {
-        if high {
-            ButtonState::Pressed
-        } else {
-            ButtonState::Released
-        }
     }
 }
