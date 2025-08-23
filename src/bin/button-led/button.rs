@@ -22,10 +22,9 @@ where
     type Error = core::convert::Infallible;
 
     fn state(&mut self) -> Result<ButtonState, Self::Error> {
-        if self.is_low()? {
-            Ok(ButtonState::Pressed)
-        } else {
-            Ok(ButtonState::Released)
+        match self.is_low()? {
+            true => Ok(ButtonState::Pressed),
+            false => Ok(ButtonState::Released),
         }
     }
 }
