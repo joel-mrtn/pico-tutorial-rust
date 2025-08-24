@@ -17,11 +17,11 @@ fn main() -> ! {
     let pins = bsp::Pins::new(p.IO_BANK0, p.PADS_BANK0, sio.gpio_bank0, &mut p.RESETS);
 
     let mut buzzer = pins.gpio15.into_push_pull_output();
-    let mut button = pins.gpio16.into_pull_down_input();
+    let mut button = pins.gpio16.into_pull_up_input();
 
     loop {
-        if button.is_low().unwrap() {
-            buzzer.set_high().unwrap();
+        if button.is_high().unwrap() {
+            buzzer.set_low().unwrap();
         } else {
             buzzer.set_low().unwrap();
         }
