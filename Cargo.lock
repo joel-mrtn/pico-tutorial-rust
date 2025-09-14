@@ -320,7 +320,6 @@ dependencies = [
  "libm",
  "panic-halt",
  "rp-pico",
- "ufmt",
 ]
 
 [[package]]

@@ -1,6 +1,8 @@
 #![no_std]
 #![no_main]
 
+use core::fmt::Write;
+
 use fugit::RateExtU32;
 use i2c_character_display::{CharacterDisplayPCF8574T, LcdDisplayType};
 use rp_pico::{
@@ -10,7 +12,6 @@ use rp_pico::{
 };
 
 use panic_halt as _;
-use ufmt::uwrite;
 
 #[entry]
 fn main() -> ! {
@@ -55,15 +56,15 @@ fn main() -> ! {
     _ = lcd.clear();
     _ = lcd.home();
 
-    _ = uwrite!(&mut lcd, "Hello, World!");
+    _ = write!(&mut lcd, "Hello, World!");
     _ = lcd.set_cursor(0, 1);
-    _ = uwrite!(&mut lcd, "Counter:");
+    _ = write!(&mut lcd, "Counter:");
 
     #[allow(clippy::empty_loop)]
     loop {
         _ = lcd.set_cursor(9, 1);
         let time = timer.get_counter().ticks() / 1_000_000;
-        _ = uwrite!(&mut lcd, "{}", time);
+        _ = write!(&mut lcd, "{}", time);
         delay.delay_ms(1000);
     }
 }
